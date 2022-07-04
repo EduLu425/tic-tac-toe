@@ -4,6 +4,12 @@ body {
     background: #404040;
 }
 
+h1 {
+    text-align: center;
+}
+#control-display {
+    text-align: center;
+}
 #gameboard {
     width: 500px;
     height: 500px;
