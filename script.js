@@ -40,6 +40,29 @@ const Gameboard = (() => {
             }
         }
     }; 
+    let gameboardString = gameboard.join('')
+    const checkForWinner = () => {
+        let combinations = [];
+        combinations.push([gameboard[0], gameboard[1], gameboard[2]].join(''));
+        combinations.push([gameboard[3], gameboard[4], gameboard[5]].join(''));
+        combinations.push([gameboard[6], gameboard[7], gameboard[8]].join(''));
+        combinations.push([gameboard[0], gameboard[3], gameboard[6]].join(''));
+        combinations.push([gameboard[1], gameboard[4], gameboard[7]].join(''));
+        combinations.push([gameboard[2], gameboard[5], gameboard[8]].join(''));
+        combinations.push([gameboard[0], gameboard[4], gameboard[8]].join(''));
+        combinations.push([gameboard[2], gameboard[4], gameboard[6]].join(''));
+        console.table(combinations);
+
+        if (combinations.includes('xxx')) {
+            alert('Player 1 wins');
+        }
+
+        else if (combinations.includes('ooo')) {
+            alert('Player 2 wins')
+        }
+
+
+    }
 
 
     const activateTiles = () => {
@@ -48,11 +71,13 @@ const Gameboard = (() => {
                 if (Game.turn === 'x') {
                     gameboard[i] = 'x';
                     assignSelections();
+                    checkForWinner();
                     Game.turn = 'o';
                 }
                 else if (Game.turn === 'o') {
                     gameboard[i] = 'o';
                     assignSelections();
+                    checkForWinner();
                     Game.turn = 'x';
                 }
             })
