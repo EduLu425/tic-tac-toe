@@ -40,7 +40,9 @@ const Gameboard = (() => {
             }
         }
     }; 
-    let gameboardString = gameboard.join('')
+
+    let turnCounter = 0;
+
     const checkForWinner = () => {
         let combinations = [];
         combinations.push([gameboard[0], gameboard[1], gameboard[2]].join(''));
@@ -61,8 +63,14 @@ const Gameboard = (() => {
             alert('Player 2 wins')
         }
 
+        else if (turnCounter >= 9 && !combinations.includes('xxx') && !combinations.includes('ooo')) {
+            alert('It\'s a draw!')
+        }
+
 
     }
+
+
 
 
     const activateTiles = () => {
@@ -71,16 +79,20 @@ const Gameboard = (() => {
                 if (Game.turn === 'x') {
                     gameboard[i] = 'x';
                     assignSelections();
+                    turnCounter++;
+                    console.log(turnCounter);
                     checkForWinner();
                     Game.turn = 'o';
                 }
                 else if (Game.turn === 'o') {
                     gameboard[i] = 'o';
                     assignSelections();
+                    turnCounter++;
+                    console.log(turnCounter)
                     checkForWinner();
                     Game.turn = 'x';
                 }
-            })
+            }, {once : true})
 
         }
 
