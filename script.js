@@ -4,9 +4,9 @@ const playerFactory = (name, side) => {
     }
 };
 
-const playerX = playerFactory('Joe Schmoe', 'x');
+let player1 = playerFactory('Joe Schmo', 'x');
 
-const playerY = playerFactory('John Doe', 'o');
+let player2 = playerFactory('John Doe', 'o');
 
 /* module to keep track of game info */ 
 const Game = (() => {
@@ -115,7 +115,20 @@ Gameboard.activateTiles();
 
 const Display = (() => {
     let turnIndicator = document.getElementById('control-display');
-
+    const xSubmitButton = document.getElementById('player-x-submit');
+    const player1Form = document.getElementById('player-1-form');
+    const player2Form = document.getElementById('player-2-form');
+    const oSubmitButton = document.getElementById('player-o-submit');
+    xSubmitButton.addEventListener('click', () => {
+        player1 = playerFactory((document.getElementById('player-x-input').value), 'x')
+        player1Form.style.display = 'none';
+        player2Form.style.display = 'flex';
+    })
+    oSubmitButton.addEventListener('click', () => {
+        player2 = playerFactory((document.getElementById('player-o-input').value), 'o');
+        player2Form.style.display = 'none';
+        document.getElementById('gameboard').style.display = 'grid';
+    })
     return {
         turnIndicator,
     }
