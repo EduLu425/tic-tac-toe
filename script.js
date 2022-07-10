@@ -20,6 +20,37 @@ const Game = (() => {
 
 Game.turn = 'x';
 
+/* Module to control display and player names */ 
+
+const Display = (() => {
+    let turnIndicator = document.getElementById('control-display');
+    const xSubmitButton = document.getElementById('player-x-submit');
+    const player1Form = document.getElementById('player-1-form');
+    const player2Form = document.getElementById('player-2-form');
+    const oSubmitButton = document.getElementById('player-o-submit');
+    xSubmitButton.addEventListener('click', () => {
+        player1 = playerFactory((document.getElementById('player-x-input').value), 'x')
+        player1Form.style.display = 'none';
+        player2Form.style.display = 'flex';
+    })
+    oSubmitButton.addEventListener('click', () => {
+        player2 = playerFactory((document.getElementById('player-o-input').value), 'o');
+        player2Form.style.display = 'none';
+        document.getElementById('gameboard').style.display = 'grid';
+        turnIndicator.style.display = 'block';
+        if (player1.name === '') {
+            turnIndicator.innerHTML = 'Turn: Player 1'
+        }
+        else {
+            turnIndicator.innerHTML = `Turn: ${player1.name}`
+        }
+    })
+    return {
+        turnIndicator,
+    }
+
+})();
+
 /* Module for interacting with the html game board */ 
 const Gameboard = (() => {
     let gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
@@ -77,6 +108,12 @@ const Gameboard = (() => {
         for (let i = 0; i < gameboard.length; i++) {
             tiles[i].addEventListener('click', () => {
                 if (Game.turn === 'x') {
+                    if (player2.name === '') {
+                        Display.turnIndicator.innerHTML = 'Turn: Player 2'
+                    }
+                    else {
+                        Display.turnIndicator.innerHTML = `Turn: ${player2.name}`
+                    }
                     gameboard[i] = 'x';
                     assignSelections();
                     turnCounter++;
@@ -85,6 +122,12 @@ const Gameboard = (() => {
                     Game.turn = 'o';
                 }
                 else if (Game.turn === 'o') {
+                    if (player1.name === '') {
+                        Display.turnIndicator.innerHTML = 'Turn: Player 1'
+                    }
+                    else {
+                        Display.turnIndicator.innerHTML = `Turn: ${player1.name}`
+                    }
                     gameboard[i] = 'o';
                     assignSelections();
                     turnCounter++;
@@ -110,27 +153,3 @@ const Gameboard = (() => {
 Gameboard.activateTiles();
 
 
-
-
-
-const Display = (() => {
-    let turnIndicator = document.getElementById('control-display');
-    const xSubmitButton = document.getElementById('player-x-submit');
-    const player1Form = document.getElementById('player-1-form');
-    const player2Form = document.getElementById('player-2-form');
-    const oSubmitButton = document.getElementById('player-o-submit');
-    xSubmitButton.addEventListener('click', () => {
-        player1 = playerFactory((document.getElementById('player-x-input').value), 'x')
-        player1Form.style.display = 'none';
-        player2Form.style.display = 'flex';
-    })
-    oSubmitButton.addEventListener('click', () => {
-        player2 = playerFactory((document.getElementById('player-o-input').value), 'o');
-        player2Form.style.display = 'none';
-        document.getElementById('gameboard').style.display = 'grid';
-    })
-    return {
-        turnIndicator,
-    }
-
-})();
