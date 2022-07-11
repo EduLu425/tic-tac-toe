@@ -17,7 +17,7 @@ h1 {
     margin: auto;
     background: #e5e5e5;
     grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
-    display: none;
+    display: grid;
 }
 
 .game-tile {
@@ -33,4 +33,15 @@ h1 {
 
 #player-2-form {
     display: none;
+}
+
+#gameboard-wrapper {
+    display: none;
+    flex-direction: column;
+}
+
+#reset-button {
+    width: 100px;
+    height: 50px;
+    margin: auto;
 }

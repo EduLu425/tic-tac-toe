@@ -36,7 +36,7 @@ const Display = (() => {
     oSubmitButton.addEventListener('click', () => {
         player2 = playerFactory((document.getElementById('player-o-input').value), 'o');
         player2Form.style.display = 'none';
-        document.getElementById('gameboard').style.display = 'grid';
+        document.getElementById('gameboard-wrapper').style.display = 'flex';
         turnIndicator.style.display = 'block';
         if (player1.name === '') {
             turnIndicator.innerHTML = 'Turn: Player 1'
@@ -87,15 +87,25 @@ const Gameboard = (() => {
         console.table(combinations);
 
         if (combinations.includes('xxx')) {
-            alert('Player 1 wins');
+            if (player1.name === '') {
+                Display.turnIndicator.innerHTML = 'Player 1 wins!'
+            }
+            else {
+                Display.turnIndicator.innerHTML = `${player1.name} wins!`
+            }
         }
 
         else if (combinations.includes('ooo')) {
-            alert('Player 2 wins')
+            if (player2.name === '') {
+                Display.turnIndicator.innerHTML = 'Player 2 wins!'
+            }
+            else {
+                Display.turnIndicator.innerHTML = `${player2.name} wins!`
+            }
         }
 
         else if (turnCounter >= 9 && !combinations.includes('xxx') && !combinations.includes('ooo')) {
-            alert('It\'s a draw!')
+            Display.turnIndicator.innerHTML = 'It\'s a draw!'
         }
 
 
