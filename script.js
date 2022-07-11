@@ -39,10 +39,10 @@ const Display = (() => {
         document.getElementById('gameboard-wrapper').style.display = 'flex';
         turnIndicator.style.display = 'block';
         if (player1.name === '') {
-            turnIndicator.innerHTML = 'Turn: Player 1'
+            turnIndicator.textContent = 'Turn: Player 1'
         }
         else {
-            turnIndicator.innerHTML = `Turn: ${player1.name}`
+            turnIndicator.textContent = `Turn: ${player1.name}`
         }
     })
     return {
@@ -55,15 +55,15 @@ const Display = (() => {
 const Gameboard = (() => {
     let gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
     let tiles = document.getElementsByClassName('game-tile');
-    
-    
+    const xIcon = `<img src = ./icons/x.svg viewbox='0 0 100 100'>`
+    const oIcon = `<img src = ./icons/o.svg viewbox='0 0 100 100'>`
     const assignSelections = () => {
         for (i = 0; i < gameboard.length; i++) {
             if (gameboard[i] === 'x') {
-                tiles[i].innerHTML = 'x'
+                tiles[i].innerHTML = xIcon;
             }
             else if (gameboard[i] === 'o') {
-                tiles[i].innerHTML = 'o'
+                tiles[i].innerHTML = oIcon;
             }
 
             else {
@@ -88,24 +88,24 @@ const Gameboard = (() => {
 
         if (combinations.includes('xxx')) {
             if (player1.name === '') {
-                Display.turnIndicator.innerHTML = 'Player 1 wins!'
+                Display.turnIndicator.textContent = 'Player 1 wins!'
             }
             else {
-                Display.turnIndicator.innerHTML = `${player1.name} wins!`
+                Display.turnIndicator.textContent = `${player1.name} wins!`
             }
         }
 
         else if (combinations.includes('ooo')) {
             if (player2.name === '') {
-                Display.turnIndicator.innerHTML = 'Player 2 wins!'
+                Display.turnIndicator.textContent = 'Player 2 wins!'
             }
             else {
-                Display.turnIndicator.innerHTML = `${player2.name} wins!`
+                Display.turnIndicator.textContent = `${player2.name} wins!`
             }
         }
 
         else if (turnCounter >= 9 && !combinations.includes('xxx') && !combinations.includes('ooo')) {
-            Display.turnIndicator.innerHTML = 'It\'s a draw!'
+            Display.turnIndicator.textContent = 'It\'s a draw!'
         }
 
 
@@ -119,10 +119,10 @@ const Gameboard = (() => {
             tiles[i].addEventListener('click', () => {
                 if (Game.turn === 'x') {
                     if (player2.name === '') {
-                        Display.turnIndicator.innerHTML = 'Turn: Player 2'
+                        Display.turnIndicator.textContent = 'Turn: Player 2'
                     }
                     else {
-                        Display.turnIndicator.innerHTML = `Turn: ${player2.name}`
+                        Display.turnIndicator.textContent = `Turn: ${player2.name}`
                     }
                     gameboard[i] = 'x';
                     assignSelections();
@@ -133,10 +133,10 @@ const Gameboard = (() => {
                 }
                 else if (Game.turn === 'o') {
                     if (player1.name === '') {
-                        Display.turnIndicator.innerHTML = 'Turn: Player 1'
+                        Display.turnIndicator.textContent = 'Turn: Player 1'
                     }
                     else {
-                        Display.turnIndicator.innerHTML = `Turn: ${player1.name}`
+                        Display.turnIndicator.textContent = `Turn: ${player1.name}`
                     }
                     gameboard[i] = 'o';
                     assignSelections();
@@ -156,6 +156,8 @@ const Gameboard = (() => {
         tiles,
         assignSelections,
         activateTiles,
+        xIcon,
+        oIcon,
     }
 
 })();

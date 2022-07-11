@@ -22,6 +22,7 @@ h1 {
 
 .game-tile {
     border: 1px solid black;
+    display: flex;
 }
 
 .new-player {
