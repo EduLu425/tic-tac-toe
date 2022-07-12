@@ -112,42 +112,42 @@ const Gameboard = (() => {
 
     }
 
+    const determineSelection = function(x) {
+        if (Game.turn === 'x') {
+            if (player2.name === '') {
+                Display.turnIndicator.textContent = 'Turn: Player 2'
+            }
+            else {
+                Display.turnIndicator.textContent = `Turn: ${player2.name}`
+            }
+            gameboard[x] = 'x';
+            assignSelections();
+            turnCounter++;
+            console.log(turnCounter);
+            checkForWinner();
+            Game.turn = 'o';
+        }
+        else if (Game.turn === 'o') {
+            if (player1.name === '') {
+                Display.turnIndicator.textContent = 'Turn: Player 1'
+            }
+            else {
+                Display.turnIndicator.textContent = `Turn: ${player1.name}`
+            }
+            gameboard[x] = 'o';
+            assignSelections();
+            turnCounter++;
+            console.log(turnCounter)
+            checkForWinner();
+            Game.turn = 'x';
+        }
+    }
 
 
 
     const activateTiles = () => {
         for (let i = 0; i < gameboard.length; i++) {
-            tiles[i].addEventListener('click', () => {
-                if (Game.turn === 'x') {
-                    if (player2.name === '') {
-                        Display.turnIndicator.textContent = 'Turn: Player 2'
-                    }
-                    else {
-                        Display.turnIndicator.textContent = `Turn: ${player2.name}`
-                    }
-                    gameboard[i] = 'x';
-                    assignSelections();
-                    turnCounter++;
-                    console.log(turnCounter);
-                    checkForWinner();
-                    Game.turn = 'o';
-                }
-                else if (Game.turn === 'o') {
-                    if (player1.name === '') {
-                        Display.turnIndicator.textContent = 'Turn: Player 1'
-                    }
-                    else {
-                        Display.turnIndicator.textContent = `Turn: ${player1.name}`
-                    }
-                    gameboard[i] = 'o';
-                    assignSelections();
-                    turnCounter++;
-                    console.log(turnCounter)
-                    checkForWinner();
-                    Game.turn = 'x';
-                }
-            }, {once : true})
-
+            tiles[i].addEventListener('click', () => {determineSelection(i)}, {once : true})
         }
 
     }
