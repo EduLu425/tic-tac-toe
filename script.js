@@ -54,6 +54,7 @@ const Display = (() => {
 /* Module for interacting with the html game board */ 
 const Gameboard = (() => {
     let gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+    const resetButton = document.getElementById('reset-button');
     let tiles = document.getElementsByClassName('game-tile');
     const xIcon = `<img src = ./icons/x.svg viewbox='0 0 100 100'>`
     const oIcon = `<img src = ./icons/o.svg viewbox='0 0 100 100'>`
@@ -150,6 +151,14 @@ const Gameboard = (() => {
         }
 
     }
+
+    resetButton.addEventListener('click', () => {
+        gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+        turnCounter = 0;
+        console.log(turnCounter);
+        assignSelections();
+        activateTiles();
+    })
 
     return {
         gameboard,
