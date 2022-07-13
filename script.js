@@ -10,15 +10,15 @@ let player2 = playerFactory('John Doe', 'o');
 
 /* module to keep track of game info */ 
 const Game = (() => {
-    let turn = ' ';
-
+    let turn = 'x';
+    let gameOn = 'yes';
     return { 
         turn, 
+        gameOn,
     }
 
 })();
 
-Game.turn = 'x';
 
 /* Module to control display and player names */ 
 
@@ -88,6 +88,7 @@ const Gameboard = (() => {
         console.table(combinations);
 
         if (combinations.includes('xxx')) {
+            Game.gameOn = 'no';
             if (player1.name === '') {
                 Display.turnIndicator.textContent = 'Player 1 wins!'
             }
@@ -97,6 +98,7 @@ const Gameboard = (() => {
         }
 
         else if (combinations.includes('ooo')) {
+            Game.gameOn = 'no';
             if (player2.name === '') {
                 Display.turnIndicator.textContent = 'Player 2 wins!'
             }
@@ -113,34 +115,35 @@ const Gameboard = (() => {
     }
 
     const determineSelection = function(x) {
-        if (Game.turn === 'x') {
-            if (player2.name === '') {
-                Display.turnIndicator.textContent = 'Turn: Player 2'
+        if (Game.gameOn === 'yes') {
+            if (Game.turn === 'x') {
+                if (player2.name === '') {
+                    Display.turnIndicator.textContent = 'Turn: Player 2'
+                }
+                else {
+                    Display.turnIndicator.textContent = `Turn: ${player2.name}`
+                }
+                gameboard[x] = 'x';
+                assignSelections();
+                turnCounter++;
+                console.log(turnCounter);
+                checkForWinner();
+                Game.turn = 'o';
             }
-            else {
-                Display.turnIndicator.textContent = `Turn: ${player2.name}`
+            else if (Game.turn === 'o') {
+                if (player1.name === '') {
+                    Display.turnIndicator.textContent = 'Turn: Player 1'
+                }
+                else {
+                    Display.turnIndicator.textContent = `Turn: ${player1.name}`
+                }
+                gameboard[x] = 'o';
+                assignSelections();
+                turnCounter++;
+                checkForWinner();
+                Game.turn = 'x';
             }
-            gameboard[x] = 'x';
-            assignSelections();
-            turnCounter++;
-            console.log(turnCounter);
-            checkForWinner();
-            Game.turn = 'o';
-        }
-        else if (Game.turn === 'o') {
-            if (player1.name === '') {
-                Display.turnIndicator.textContent = 'Turn: Player 1'
-            }
-            else {
-                Display.turnIndicator.textContent = `Turn: ${player1.name}`
-            }
-            gameboard[x] = 'o';
-            assignSelections();
-            turnCounter++;
-            console.log(turnCounter)
-            checkForWinner();
-            Game.turn = 'x';
-        }
+        }                    
     }
 
 
@@ -155,18 +158,29 @@ const Gameboard = (() => {
     resetButton.addEventListener('click', () => {
         gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
         turnCounter = 0;
+        Game.turn = 'x';
+        Game.gameOn = 'yes';
         console.log(turnCounter);
         assignSelections();
         activateTiles();
     })
 
+    for (let tile of tiles) {
+        tile.addEventListener('mouseenter', () => {
+            tile.style.background = '#a3a3a3';
+        })
+    }
+
+    for (let tile of tiles) {
+        tile.addEventListener('mouseleave', () => {
+            tile.style.background = '#e5e5e5';
+        })
+    }
+    
+
     return {
-        gameboard,
         tiles,
-        assignSelections,
         activateTiles,
-        xIcon,
-        oIcon,
     }
 
 })();
