@@ -115,54 +115,61 @@ const Gameboard = (() => {
     }
 
     const determineSelection = function(x) {
-        if (Game.gameOn === 'yes') {
-            if (Game.turn === 'x') {
-                if (player2.name === '') {
-                    Display.turnIndicator.textContent = 'Turn: Player 2'
-                }
-                else {
-                    Display.turnIndicator.textContent = `Turn: ${player2.name}`
-                }
-                gameboard[x] = 'x';
-                assignSelections();
-                turnCounter++;
-                console.log(turnCounter);
-                checkForWinner();
-                Game.turn = 'o';
-            }
-            else if (Game.turn === 'o') {
-                if (player1.name === '') {
-                    Display.turnIndicator.textContent = 'Turn: Player 1'
-                }
-                else {
-                    Display.turnIndicator.textContent = `Turn: ${player1.name}`
-                }
-                gameboard[x] = 'o';
-                assignSelections();
-                turnCounter++;
-                checkForWinner();
-                Game.turn = 'x';
-            }
-        }                    
+        
     }
 
 
 
     const activateTiles = () => {
         for (let i = 0; i < gameboard.length; i++) {
-            tiles[i].addEventListener('click', () => {determineSelection(i)}, {once : true})
+            tiles[i].addEventListener('click', () => {
+                if (Game.gameOn === 'yes') {
+                    if (Game.turn === 'x') {
+                        if (player2.name === '') {
+                            Display.turnIndicator.textContent = 'Turn: Player 2'
+                        }
+                        else {
+                            Display.turnIndicator.textContent = `Turn: ${player2.name}`
+                        }
+                        gameboard[i] = 'x';
+                        assignSelections();
+                        turnCounter++;
+                        console.log(turnCounter);
+                        checkForWinner();
+                        Game.turn = 'o';
+                    }
+                    else if (Game.turn === 'o') {
+                        if (player1.name === '') {
+                        Display.turnIndicator.textContent = 'Turn: Player 1'
+                        }
+                        else {
+                            Display.turnIndicator.textContent = `Turn: ${player1.name}`
+                        }
+                        gameboard[i] = 'o';
+                        assignSelections();
+                        turnCounter++;
+                        checkForWinner();
+                        Game.turn = 'x';
+                    }
+                } }, 
+                {once : true})
         }
-
     }
 
     resetButton.addEventListener('click', () => {
-        gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
-        turnCounter = 0;
-        Game.turn = 'x';
-        Game.gameOn = 'yes';
-        console.log(turnCounter);
-        assignSelections();
-        activateTiles();
+        if (turnCounter > 0) {
+            turnCounter = 0;
+            console.log(turnCounter);
+            gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            assignSelections();
+            if (Game.turn === 'o') {
+                Game.turn = 'x';
+            };
+            Game.gameOn = 'yes';
+            
+            console.log(Game.turn);
+            activateTiles();
+        }
     })
 
     for (let tile of tiles) {
