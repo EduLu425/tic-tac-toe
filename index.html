@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Schoolbell&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
     <div id="control-display"></div>
     <form class="new-player" id="player-1-form">
         <label for="player-x-input">Player 1:</label>
-        <input type="text" id="player-x-input" pattern="^[a-z0-9_-]{2,15}$" required>
-        <button type="button" id="player-x-submit">Submit</button>
+        <input type="text" id="player-x-input" pattern="^[a-z0-9_-]{2,15}$" class = "player-input" required>
+        <button type="button" id="player-x-submit" class="player-submit">Submit</button>
     </form>
     <form class="new-player" id="player-2-form">
         <label for="player-o-input">Player 2:</label>
-        <input type="text" id="player-o-input" pattern="^[a-z0-9_-]{2,15}$" required>
-        <button type="button" id="player-o-submit">Submit</button>
+        <input type="text" id="player-o-input" pattern="^[a-z0-9_-]{2,15}$" class = "player-input" required>
+
+        <div>AI?<input type="radio" id="ai-selection"></div>
+        <button type="button" id="player-o-submit" class="player-submit">Submit</button>
+        
     </form>
     <div id="gameboard-wrapper">
         <div id="gameboard">

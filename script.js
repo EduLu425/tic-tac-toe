@@ -75,6 +75,15 @@ const Gameboard = (() => {
 
     let turnCounter = 0;
 
+    function pickRandom(array) {
+        let random = Math.floor(Math.random() * array.length);
+    
+        return array[random];
+    
+    }
+
+    let tileArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
     const checkForWinner = () => {
         let combinations = [];
         combinations.push([gameboard[0], gameboard[1], gameboard[2]].join(''));
@@ -85,7 +94,6 @@ const Gameboard = (() => {
         combinations.push([gameboard[2], gameboard[5], gameboard[8]].join(''));
         combinations.push([gameboard[0], gameboard[4], gameboard[8]].join(''));
         combinations.push([gameboard[2], gameboard[4], gameboard[6]].join(''));
-        console.table(combinations);
 
         if (combinations.includes('xxx')) {
             Game.gameOn = 'no';
@@ -114,44 +122,52 @@ const Gameboard = (() => {
 
     }
 
-    const determineSelection = function(x) {
-        
-    }
+    function determineSelection(i) {return function() {
+        if (Game.gameOn === 'yes') {
+            if (Game.turn === 'x') {
+                if (player2.name === '') {
+                    Display.turnIndicator.textContent = 'Turn: Player 2'
+                }
+                else {
+                    Display.turnIndicator.textContent = `Turn: ${player2.name}`
+                }
+                gameboard[i] = 'x';
+                assignSelections();
+                turnCounter++;
+                tileArray.splice(i, 1);
+                checkForWinner();
+                Game.turn = 'o';
+                if (document.getElementById('ai-selection').checked) {
+                    let aiSelection = pickRandom(tileArray);
+                    console.log(aiSelection);
+                    tiles[aiSelection].click();
+                    tileArray.splice(aiSelection, 1);
+                }
+            }
+            else if (Game.turn === 'o') {
+                if (player1.name === '') {
+                Display.turnIndicator.textContent = 'Turn: Player 1'
+                }
+                else {
+                    Display.turnIndicator.textContent = `Turn: ${player1.name}`
+                }
+                gameboard[i] = 'o';
+                assignSelections();
+                turnCounter++;
+                checkForWinner();
+                Game.turn = 'x';
+            }
+        }
+    }}
+    
+
+    
 
 
 
     const activateTiles = () => {
         for (let i = 0; i < gameboard.length; i++) {
-            tiles[i].addEventListener('click', () => {
-                if (Game.gameOn === 'yes') {
-                    if (Game.turn === 'x') {
-                        if (player2.name === '') {
-                            Display.turnIndicator.textContent = 'Turn: Player 2'
-                        }
-                        else {
-                            Display.turnIndicator.textContent = `Turn: ${player2.name}`
-                        }
-                        gameboard[i] = 'x';
-                        assignSelections();
-                        turnCounter++;
-                        console.log(turnCounter);
-                        checkForWinner();
-                        Game.turn = 'o';
-                    }
-                    else if (Game.turn === 'o') {
-                        if (player1.name === '') {
-                        Display.turnIndicator.textContent = 'Turn: Player 1'
-                        }
-                        else {
-                            Display.turnIndicator.textContent = `Turn: ${player1.name}`
-                        }
-                        gameboard[i] = 'o';
-                        assignSelections();
-                        turnCounter++;
-                        checkForWinner();
-                        Game.turn = 'x';
-                    }
-                } }, 
+            tiles[i].addEventListener('click', determineSelection(i), 
                 {once : true})
         }
     }
@@ -166,7 +182,6 @@ const Gameboard = (() => {
                 Game.turn = 'x';
             };
             Game.gameOn = 'yes';
-            
             console.log(Game.turn);
             activateTiles();
         }
