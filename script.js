@@ -79,7 +79,6 @@ const Gameboard = (() => {
         let random = Math.floor(Math.random() * array.length);
     
         return array[random];
-    
     }
 
     let tileArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -122,6 +121,7 @@ const Gameboard = (() => {
 
     }
 
+
     function determineSelection(i) {return function() {
         if (Game.gameOn === 'yes') {
             if (Game.turn === 'x') {
@@ -134,14 +134,15 @@ const Gameboard = (() => {
                 gameboard[i] = 'x';
                 assignSelections();
                 turnCounter++;
-                tileArray.splice(i, 1);
+                tileArray.splice(tileArray.indexOf(i), 1);
+                console.log(tileArray);
+                let aiSelection = pickRandom(tileArray);
+                tileArray.splice(tileArray.indexOf(aiSelection), 1);
                 checkForWinner();
                 Game.turn = 'o';
                 if (document.getElementById('ai-selection').checked) {
-                    let aiSelection = pickRandom(tileArray);
-                    console.log(aiSelection);
                     tiles[aiSelection].click();
-                    tileArray.splice(aiSelection, 1);
+
                 }
             }
             else if (Game.turn === 'o') {
@@ -174,13 +175,12 @@ const Gameboard = (() => {
 
     resetButton.addEventListener('click', () => {
         if (turnCounter > 0) {
+            Game.turn = 'x';
             turnCounter = 0;
             console.log(turnCounter);
             gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            tileArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
             assignSelections();
-            if (Game.turn === 'o') {
-                Game.turn = 'x';
-            };
             Game.gameOn = 'yes';
             console.log(Game.turn);
             activateTiles();
@@ -203,6 +203,7 @@ const Gameboard = (() => {
     return {
         tiles,
         activateTiles,
+        tileArray,
     }
 
 })();
