@@ -35,9 +35,6 @@ h1 {
     display: flex;
 }
 
-.game-tile :hover {
-    background-color: #a3a3a3 !important;
-}
 
 .player-submit {
     background: #171717;
@@ -49,6 +46,12 @@ h1 {
 .player-input {
     border-style: none;
     border-radius: 5px;
+    
+}
+
+.player-input :focus {
+    border: none;
+    box-shadow: #716d6d;
 }
 
 .new-player {

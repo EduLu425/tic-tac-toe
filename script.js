@@ -28,6 +28,28 @@ const Display = (() => {
     const player1Form = document.getElementById('player-1-form');
     const player2Form = document.getElementById('player-2-form');
     const oSubmitButton = document.getElementById('player-o-submit');
+    const player1Input = document.getElementById('player-x-input');
+    const player2Input = document.getElementById('player-o-input');
+    const stopSubmission = function(e) {
+        e.preventDefault();
+    }
+    player1Form.addEventListener('submit', stopSubmission);
+    player2Form.addEventListener('submit', stopSubmission);
+    player1Input.addEventListener('keypress', function(event) {
+        if (event.key === 'enter') {
+            event.preventDefault();
+            xSubmitButton.click();
+        }
+    })
+    player2Input.addEventListener('keypress', function(event) {
+        if (event.key === 'enter') {
+            event.preventDefault();
+            oSubmitButton.click();
+        }
+    })
+    player1Input.addEventListener('focus', () => {
+        player1Input.style.boxShadow = '#716d6d';
+    })
     xSubmitButton.addEventListener('click', () => {
         player1 = playerFactory((document.getElementById('player-x-input').value), 'x')
         player1Form.style.display = 'none';
@@ -54,6 +76,9 @@ const Display = (() => {
 /* Module for interacting with the html game board */ 
 const Gameboard = (() => {
     let gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+    const gameboardDiv = document.getElementById('gameboard');
+    const gameboardTile = document.createElement('div');
+    gameboardTile.setAttribute('class', 'game-tile');
     const resetButton = document.getElementById('reset-button');
     let tiles = document.getElementsByClassName('game-tile');
     const xIcon = `<img src = ./icons/x.svg viewbox='0 0 100 100'>`
@@ -115,7 +140,8 @@ const Gameboard = (() => {
         }
 
         else if (turnCounter >= 9 && !combinations.includes('xxx') && !combinations.includes('ooo')) {
-            Display.turnIndicator.textContent = 'It\'s a draw!'
+            Display.turnIndicator.textContent = 'It\'s a draw!';
+            Game.gameOn = 'no';
         }
 
 
@@ -140,7 +166,9 @@ const Gameboard = (() => {
                 tileArray.splice(tileArray.indexOf(aiSelection), 1);
                 checkForWinner();
                 Game.turn = 'o';
-                if (document.getElementById('ai-selection').checked) {
+                console.log(Game.turn);
+                console.table(gameboard);
+                if (document.getElementById('ai-selection').checked  && Game.gameOn === 'yes') {
                     tiles[aiSelection].click();
 
                 }
@@ -174,17 +202,32 @@ const Gameboard = (() => {
     }
 
     resetButton.addEventListener('click', () => {
-        if (turnCounter > 0) {
+            while (gameboardDiv.firstChild) {
+                gameboardDiv.removeChild(gameboardDiv.lastChild)
+            }
+            for (let i = 0; i < 10; i++) {
+                gameboardDiv.appendChild(gameboardTile.cloneNode(true))
+            }
             Game.turn = 'x';
             turnCounter = 0;
-            console.log(turnCounter);
             gameboard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            activateTiles();
             tileArray = [0, 1, 2, 3, 4, 5, 6, 7, 8];
             assignSelections();
             Game.gameOn = 'yes';
-            console.log(Game.turn);
-            activateTiles();
-        }
+            for (let tile of tiles) {
+                tile.addEventListener('mouseenter', () => {
+                    tile.style.background = '#a3a3a3';
+                })
+            }
+        
+            for (let tile of tiles) {
+                tile.addEventListener('mouseleave', () => {
+                    tile.style.background = '#e5e5e5';
+                })
+            }
+           
+        
     })
 
     for (let tile of tiles) {
@@ -201,9 +244,14 @@ const Gameboard = (() => {
     
 
     return {
+        assignSelections,
         tiles,
         activateTiles,
         tileArray,
+        gameboard,
+        turnCounter,
+        gameboardDiv,
+        gameboardTile,
     }
 
 })();
